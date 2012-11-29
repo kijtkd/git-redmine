@@ -124,7 +124,8 @@ if args:
         print issue["issue"]["description"]
         for journal in issue["issue"]["journals"]:
             print "%s : %s" % (journal['user']['name'], journal['created_on'])
-            print journal['notes']
+            if journal.has_key('notes'):
+                print journal['notes']
             print "------"
         quit(0)
 
