@@ -59,7 +59,7 @@ def get_issue(id):
         conn = httplib.HTTPSConnection(u.netloc)
     else: 
         conn = httplib.HTTPConnection(u.netloc)
-    conn.request("GET", "/issues/%d.json?key=%s" % (id, api_key))
+    conn.request("GET", "/issues/%d.json?include=relations,journals&key=%s" % (id, api_key))
     r1 = conn.getresponse()
     if r1.status != 200:
         print r1.status, r1.reason
@@ -76,7 +76,7 @@ def update_issue(id, data):
         conn = httplib.HTTPSConnection(u.netloc)
     else:
         conn = httplib.HTTPConnection(u.netloc)
-    conn.request("PUT", "/issues/%d.json?key=%s" % (id, api_key), body=json_data, headers={"Content-Type":"application/json"})
+    conn.request("PUT", "/issues/%d.json?include=relations,journals&key=%s" % (id, api_key), body=json_data, headers={"Content-Type":"application/json"})
     r1 = conn.getresponse()
     if r1.status != 200:
         print r1.status, r1.reason
@@ -118,8 +118,14 @@ if args:
         print "%s : %d%%" % ("Done Ratio".rjust(16), issue["issue"]["done_ratio"])
         print "%s : %s" % ("Assigned To".rjust(16), issue["issue"]["assigned_to"]["name"])
         print "%s : %s" % ("Subject".rjust(16), issue["issue"]["subject"])
+        print "%s : %s" % (u"Startdate".rjust(16), issue["issue"]["start_date"])
+        print "%s : %s" % (u"Duedate".rjust(16), issue["issue"]["due_date"])
         print "------"
         print issue["issue"]["description"]
+        for journal in issue["issue"]["journals"]:
+            print "%s : %s" % (journal['user']['name'], journal['created_on'])
+            print journal['notes']
+            print "------"
         quit(0)
 
 f = urllib2.urlopen('%s/issues.json?limit=100&key=%s' % (project_url, api_key))
