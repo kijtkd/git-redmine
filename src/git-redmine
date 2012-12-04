@@ -124,10 +124,12 @@ if args:
         print "%s : %s" % ("Tracker".rjust(16), issue["issue"]["tracker"]["name"])
         print "%s : %s" % ("Status".rjust(16), issue["issue"]["status"]["name"])
         print "%s : %d%%" % ("Done Ratio".rjust(16), issue["issue"]["done_ratio"])
-        print "%s : %s" % ("Assigned To".rjust(16), issue["issue"]["assigned_to"]["name"])
+        if issue["issue"].has_key("assigned_to"):
+            print "%s : %s" % ("Assigned To".rjust(16), issue["issue"]["assigned_to"]["name"])
         print "%s : %s" % ("Subject".rjust(16), issue["issue"]["subject"])
         print "%s : %s" % (u"Start-date".rjust(16), issue["issue"]["start_date"])
-        print "%s : %s" % (u"Due-date".rjust(16), issue["issue"]["due_date"])
+        if issue["issue"].has_key("due_date"):
+            print "%s : %s" % (u"Due-date".rjust(16), issue["issue"]["due_date"])
         print "------"
         print issue["issue"]["description"]
         for journal in issue["issue"]["journals"]:
